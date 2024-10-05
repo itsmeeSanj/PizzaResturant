@@ -74,14 +74,7 @@ function App() {
         data={pizzaData}
       />
 
-      {isOpen && (
-        <Footer
-          info={
-            isOpen &&
-            `We're open until ${closeHour}:00. Come visit us or order online.`
-          }
-        />
-      )}
+      <Footer isOpen={isOpen} openHour={openHour} closeHour={closeHour} />
     </div>
   );
 }
@@ -94,28 +87,28 @@ function App() {
   Angular has two-way data flow
 */
 
-const Header = (props) => {
+const Header = ({ title }) => {
   return (
     <header className='header'>
-      <h1>{props?.title}</h1>
+      <h1>{title}</h1>
     </header>
   );
 };
 
-const Menu = (props) => {
+const Menu = ({ title, desc, data }) => {
   return (
     <div className='menu'>
-      <h2>{props?.title}</h2>
-      <p>{props?.desc}</p>
-      {Pizzas.length > 0 && <Pizzas data={props?.data} />}
+      <h2>{title}</h2>
+      <p>{desc}</p>
+      {Pizzas.length > 0 && <Pizzas data={data} />}
     </div>
   );
 };
 
-const Pizzas = (props) => {
+const Pizzas = ({ data }) => {
   return (
     <div className='pizzas'>
-      {props.data.map((item, id) => {
+      {data.map((item, id) => {
         return <Pizza data={item} key={id} />;
       })}
     </div>
@@ -137,14 +130,28 @@ const Pizza = (data) => {
   );
 };
 
-const Footer = (props) => (
-  <footer>
-    <div className='order'>
-      <div>{props.info}</div>
+const Footer = ({ isOpen, openHour, closeHour }) => {
+  return (
+    <footer className='footer'>
+      <div className='order'>
+        {isOpen ? (
+          <Order closeHour={closeHour} />
+        ) : (
+          `We're happy to welcome you between ${openHour}:00 to ${closeHour}:00`
+        )}
+      </div>
+    </footer>
+  );
+};
+
+const Order = ({ closeHour }) => {
+  return (
+    <>
+      <p>We're open until {closeHour}:00. Come visit us or order online.</p>
       <button className='btn'>Order now</button>
-    </div>
-  </footer>
-);
+    </>
+  );
+};
 
 // React v18
 const root = ReactDOM.createRoot(document.getElementById("root"));
