@@ -58,33 +58,31 @@ function App() {
   // }, []);
 
   const hour = new Date().getHours();
-  const openHour = 8;
-  const closeHour = 22;
+  const openHour = 9;
+  const closeHour = 20;
 
-  // const isOpen =
-  //   openHour >= hour && openHour <= closeHour
-  //     ? alert("It's open")
-  //     : alert("It's not");
-
-  // console.log("isOpen", isOpen);
+  const isOpen = hour >= openHour && hour <= closeHour;
 
   return (
-    <>
-      <div className='container'>
-        <Header title='Fast React Pizza Co.' />
+    <div className='container'>
+      <Header title='Fast React Pizza Co.' />
 
-        <Menu
-          title='Our Menu'
-          desc=' Authentic Italian Cuisine. 6 creative dishes to choose from. All from
+      <Menu
+        title='Our Menu'
+        desc=' Authentic Italian Cuisine. 6 creative dishes to choose from. All from
         our stone oven. all organic. all delicious.'
-          data={pizzaData}
-        />
+        data={pizzaData}
+      />
 
+      {isOpen && (
         <Footer
-          info={`We're open until ${hour}. Come visit us or order online.`}
+          info={
+            isOpen &&
+            `We're open until ${closeHour}:00. Come visit us or order online.`
+          }
         />
-      </div>
-    </>
+      )}
+    </div>
   );
 }
 
@@ -109,8 +107,7 @@ const Menu = (props) => {
     <div className='menu'>
       <h2>{props?.title}</h2>
       <p>{props?.desc}</p>
-
-      <Pizzas data={props?.data} />
+      {Pizzas.length > 0 && <Pizzas data={props?.data} />}
     </div>
   );
 };
